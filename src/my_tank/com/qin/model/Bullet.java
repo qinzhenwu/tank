@@ -4,10 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import javax.sound.sampled.AudioInputStream;
+
+import javafx.scene.media.AudioClip;
 import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
-import my_tank.com.qin.frame.manager.SourceManager;
+import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.utils.Audio;
+import sun.audio.AudioData;
 
 /**
  * 子弹类
@@ -42,6 +47,7 @@ public class Bullet {
 
 	public void die() {
 		this.isAlive = false;
+		new Thread(()->new Audio("audio/explode.wav").play()).start();//新建个子线程处理声音，在主线程中会引起卡顿
 	}
 
 	/**
@@ -53,10 +59,13 @@ public class Bullet {
 		boolean isCrash = false;
 		if (this.group != tank.getGroup()) {// 同组的子弹不碰撞
 			rectangle.setBounds(this.x, this.y, width, height);
-			  isCrash = rectangle.intersects(tank.getRectangle());
+			isCrash = rectangle.intersects(tank.getRectangle());
 			if (isCrash) {// 如果矩形包含表示碰撞
 				this.die();
 				tank.die();
+				int eX = tank.getX() + tank.WIDTH / 2 - Explode.WIDTH / 2;
+				int eY = tank.getY() + tank.HEIGHT / 2 - Explode.HEIGHT / 2;
+				this.tankFrame.explodes.add(new Explode(eX, eY, this.tankFrame));
 			}
 		}
 		return isCrash;

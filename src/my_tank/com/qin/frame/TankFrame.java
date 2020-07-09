@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -13,24 +14,31 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
+import javax.swing.LayoutStyle;
+
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
 import my_tank.com.qin.model.Tank;
+import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
 
 	Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
 	public List<Tank> enemyTanks = new ArrayList<>();// 敌机坦克
+	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
-	public int WIDTH = 600, HEIGHT = 600;
+	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
+	public int WIDTH = 800, HEIGHT = 800;
+
+	private Random random = new Random();
 
 	public TankFrame() {
 
 		setSize(WIDTH, HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		this.setTitle("tank");
+		this.setLocation(600, 200);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -70,24 +78,22 @@ public class TankFrame extends Frame {
 		g.setColor(Color.WHITE);
 		g.drawString("子弹的数量：" + bullets.size(), 10, 80);
 		g.drawString("敌人的数量：" + enemyTanks.size(), 10, 110);
-		g.drawString("爆炸的数量：" + explodes.size(), 10, 150);
+		g.drawString("爆炸的数量：" + explodes.size(), 10, 140);
 		g.setColor(c);
 		tank.paint(g);
 
 		for (int i = 0; i < bullets.size(); i++) {
 			Bullet b = bullets.get(i);
 			b.paint(g);// 画出所有的子弹
-			drawEnemy(g);
 			if (enemyTanks.size() > 0) {
 				for (int k = 0; k < enemyTanks.size(); k++) {
-					Tank tank = enemyTanks.get(k);
-					boolean isExplode = b.crash(tank);
-					if (isExplode) {
-						explodes.add(new Explode(tank.getX(), tank.getY(), this));
-					}
-
+					Tank enemyTank = enemyTanks.get(k);
+					b.crash(enemyTank);
 				}
-
+				//boolean isKill = b.crash(tank);
+//				if (isKill) {不会被打，无敌
+//					explodes.add(new Explode(tank.getX(), tank.getY(), this));
+//				}
 			}
 		}
 		drawEnemy(g);
@@ -114,8 +120,29 @@ public class TankFrame extends Frame {
 			for (int i = 0; i < enemyTanks.size(); i++) {
 				Tank tank = enemyTanks.get(i);
 				tank.paint(g);
+				int rand = random.nextInt(1000);
+				if (rand > 950) {
+					tank.fire();
+				}
 			}
 		}
+
+	}
+
+	/**
+	 * 获取到随机方向，不能与原来的方向一致
+	 * 
+	 * @param tank
+	 * @return
+	 */
+	public Dir getRandomDir(Tank tank) {
+		int di = random.nextInt(4);// 随机0-3
+		Dir d = Dir.values()[di];
+		Dir od = tank.getDir();
+		if (od == d) {
+			return getRandomDir(tank);
+		}
+		return d;
 	}
 
 	/**
@@ -152,6 +179,7 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_DOWN:
 				is_d = true;
+				
 				break;
 
 			default:
@@ -181,6 +209,8 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_CONTROL:// ctl键
 				tank.fire();
+				
+				new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
 				break;
 			case KeyEvent.VK_SHIFT:// SHIFT键停止tank
 				tank.setMove(false);

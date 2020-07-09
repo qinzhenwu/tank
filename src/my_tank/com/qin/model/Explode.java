@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import com.sun.deploy.uitoolkit.impl.fx.ui.resources.ResourceManager;
 
 import my_tank.com.qin.frame.TankFrame;
-import my_tank.com.qin.frame.manager.SourceManager;
+import my_tank.com.qin.manager.SourceManager;
 
 /**
  * 爆炸效果
@@ -21,6 +21,9 @@ public class Explode {
 	private int step = 0;// 当前效果刷了多少次，一共16张图片，超过16，重置为0
 
 	private TankFrame tf;// 持有frame对象
+
+	public static int WIDTH = SourceManager.explode[0].getWidth();
+	public static int HEIGHT = SourceManager.explode[0].getHeight();
 
 	private boolean isOver = true;// 爆炸结束
 
