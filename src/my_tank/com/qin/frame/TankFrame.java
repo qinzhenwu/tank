@@ -209,8 +209,6 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_CONTROL:// ctl¼ü
 				tank.fire();
-				
-				new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
 				break;
 			case KeyEvent.VK_SHIFT:// SHIFT¼üÍ£Ö¹tank
 				tank.setMove(false);

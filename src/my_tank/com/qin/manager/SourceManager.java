@@ -10,6 +10,11 @@ import com.sun.imageio.plugins.common.ImageUtil;
 import my_tank.com.qin.utils.ImageUtils;
 
 public class SourceManager {
+	//保证其他类中无法创建，静态属性和静态代码块中的代码，在类加载完成后就会执行
+	//只需要保证SourceManager为单例即可
+	private SourceManager() {
+		
+	}
 
 	public static BufferedImage GoodTankUp, GoodTankDn, GoodTankLf, GoodTankRi;// 不同方向的tank
 	public static BufferedImage BadTankUp, BadTankDn, BadTankLf, BadTankRi;// 不同方向的tank

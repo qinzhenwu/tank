@@ -10,6 +10,9 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.strategy.DefaultFireStrategy;
+import my_tank.com.qin.strategy.FireStrategy;
+import my_tank.com.qin.strategy.FourFireStrategy;
 import my_tank.com.qin.utils.Audio;
 
 /**
@@ -44,6 +47,8 @@ public class Tank {
 
 	private Rectangle rectangle = new Rectangle();// tank形成的矩形
 
+	private FireStrategy fireStrategy;// 发射策略
+
 	/**
 	 * 构造方法
 	 * 
@@ -56,25 +61,27 @@ public class Tank {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-		this.tf = tf;
+		this.setTf(tf);
 		this.group = group;
 		this.rectangle.x = this.x;
 		this.rectangle.y = this.y;
 		this.rectangle.width = WIDTH;
 		this.rectangle.height = HEIGHT;
+		//创建tank时指定发射策略
+		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
+			this.fireStrategy = new FourFireStrategy();
+		} else {
+			this.fireStrategy = new DefaultFireStrategy();
+		}
 	}
 
 	public void fire() {
-		int bX = this.x + WIDTH / 2 - Bullet.width / 2;
-		int bY = this.y + HEIGHT / 2 - Bullet.height / 2;// 计算子弹的位置
-		
-		tf.bullets.add(new Bullet(bX, bY, this.dir, true, this.tf, this.group));// 向frame对象中的list中放入子弹对象，然后不断打印
-		//new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+		fireStrategy.fire(this);
 	}
 
 	public void paint(Graphics g) {
 		if (!isAlive) {
-			tf.enemyTanks.remove(this);
+			getTf().enemyTanks.remove(this);
 		}
 		boundsCheck();
 		rectangle.x = this.x;
@@ -95,14 +102,14 @@ public class Tank {
 		if (this.x <= 2) {
 			this.x = 2;
 		}
-		if (this.x >= (tf.WIDTH - this.WIDTH - 2)) {
-			this.x = (tf.WIDTH - this.WIDTH - 2);
+		if (this.x >= (getTf().WIDTH - this.WIDTH - 2)) {
+			this.x = (getTf().WIDTH - this.WIDTH - 2);
 		}
 		if (this.y <= 32) {// 标题栏的宽度
 			this.y = 32;
 		}
-		if (y >= (tf.HEIGHT - this.HEIGHT - 2)) {
-			y = (tf.HEIGHT - this.HEIGHT - 2);
+		if (y >= (getTf().HEIGHT - this.HEIGHT - 2)) {
+			y = (getTf().HEIGHT - this.HEIGHT - 2);
 		}
 	}
 
@@ -131,11 +138,13 @@ public class Tank {
 			break;
 		case LEFT:
 			this.x -= speed;
-			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankLf : SourceManager.BadTankLf, this.x, this.y, null);
+			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankLf : SourceManager.BadTankLf, this.x,
+					this.y, null);
 			break;
 		case RIGHT:
 			this.x += speed;
-			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankRi : SourceManager.BadTankRi, this.x, this.y, null);
+			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankRi : SourceManager.BadTankRi, this.x,
+					this.y, null);
 			break;
 		default:
 			break;
@@ -158,10 +167,12 @@ public class Tank {
 					this.y, null);
 			break;
 		case LEFT:
-			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankLf : SourceManager.BadTankLf, this.x, this.y, null);
+			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankLf : SourceManager.BadTankLf, this.x,
+					this.y, null);
 			break;
 		case RIGHT:
-			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankRi : SourceManager.BadTankRi, this.x, this.y, null);
+			g.drawImage(this.group == TankGroup.RED ? SourceManager.GoodTankRi : SourceManager.BadTankRi, this.x,
+					this.y, null);
 			break;
 		default:
 			break;
@@ -234,6 +245,14 @@ public class Tank {
 
 	public void setMove(boolean isMove) {
 		this.isMove = isMove;
+	}
+
+	public TankFrame getTf() {
+		return tf;
+	}
+
+	public void setTf(TankFrame tf) {
+		this.tf = tf;
 	}
 
 }

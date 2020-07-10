@@ -47,7 +47,7 @@ public class Bullet {
 
 	public void die() {
 		this.isAlive = false;
-		new Thread(()->new Audio("audio/explode.wav").play()).start();//新建个子线程处理声音，在主线程中会引起卡顿
+		new Thread(() -> new Audio("audio/explode.wav").play()).start();// 新建个子线程处理声音，在主线程中会引起卡顿
 	}
 
 	/**
@@ -79,10 +79,11 @@ public class Bullet {
 		this.group = group;
 		this.isAlive = isAlive;
 		this.tankFrame = tankFrame;
+		this.tankFrame.bullets.add(this);
 	}
 
 	public void paint(Graphics g) {
-
+		// 采用不同的策略
 		if (!this.isAlive) {
 			tankFrame.bullets.remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
 		}
