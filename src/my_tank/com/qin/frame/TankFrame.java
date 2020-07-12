@@ -16,15 +16,20 @@ import java.util.regex.Matcher;
 
 import javax.swing.LayoutStyle;
 
+import my_tank.com.qin.factory.AbstractFactory;
+import my_tank.com.qin.factory.GoodTankFactory;
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
 import my_tank.com.qin.model.Tank;
+import my_tank.com.qin.product.AbstractTank;
 import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
 
-	Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
-	public List<Tank> enemyTanks = new ArrayList<>();// 敌机坦克
+	AbstractFactory factory=GoodTankFactory.getInstance();
+	AbstractTank tank=factory.createTank(200, 200, Dir.RIGHT, this);
+	//Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
+	public List<AbstractTank> enemyTanks = new ArrayList<>();// 敌机坦克
 	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
@@ -87,7 +92,7 @@ public class TankFrame extends Frame {
 			b.paint(g);// 画出所有的子弹
 			if (enemyTanks.size() > 0) {
 				for (int k = 0; k < enemyTanks.size(); k++) {
-					Tank enemyTank = enemyTanks.get(k);
+					AbstractTank enemyTank = enemyTanks.get(k);
 					b.crash(enemyTank);
 				}
 				//boolean isKill = b.crash(tank);
@@ -118,7 +123,7 @@ public class TankFrame extends Frame {
 	private void drawEnemy(Graphics g) {
 		if (enemyTanks.size() > 0) {
 			for (int i = 0; i < enemyTanks.size(); i++) {
-				Tank tank = enemyTanks.get(i);
+				AbstractTank tank = enemyTanks.get(i);
 				tank.paint(g);
 				int rand = random.nextInt(1000);
 				if (rand > 950) {

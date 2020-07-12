@@ -10,6 +10,7 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.product.AbstractTank;
 import my_tank.com.qin.strategy.DefaultFireStrategy;
 import my_tank.com.qin.strategy.FireStrategy;
 import my_tank.com.qin.strategy.FourFireStrategy;
@@ -21,33 +22,7 @@ import my_tank.com.qin.utils.Audio;
  * @author qinzhenwu
  *
  */
-public class Tank {
-
-	private int x;// 坐标
-
-	private int y;// 坐标
-
-	private Dir dir = Dir.DOWN;// 方向
-
-	private int speed = 5;
-
-	private boolean isMove = false;// 设定弹框是否可移动
-
-	public int WIDTH = SourceManager.GoodTankUp.getWidth();
-
-	public int HEIGHT = SourceManager.GoodTankUp.getHeight();
-
-	private boolean isAlive = true;
-
-	private TankFrame tf;// 持有frame对象
-
-	private TankGroup group = TankGroup.RED;// 默认红队
-
-	private Random random = new Random();
-
-	private Rectangle rectangle = new Rectangle();// tank形成的矩形
-
-	private FireStrategy fireStrategy;// 发射策略
+public class Tank extends AbstractTank {
 
 	/**
 	 * 构造方法
@@ -67,7 +42,7 @@ public class Tank {
 		this.rectangle.y = this.y;
 		this.rectangle.width = WIDTH;
 		this.rectangle.height = HEIGHT;
-		//创建tank时指定发射策略
+		// 创建tank时指定发射策略
 		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
 			this.fireStrategy = new FourFireStrategy();
 		} else {

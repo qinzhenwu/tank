@@ -11,6 +11,8 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.product.AbstractBullet;
+import my_tank.com.qin.product.AbstractTank;
 import my_tank.com.qin.utils.Audio;
 import sun.audio.AudioData;
 
@@ -20,30 +22,9 @@ import sun.audio.AudioData;
  * @author qinzhenwu
  *
  */
-public class Bullet {
+public class Bullet extends AbstractBullet{
 
-	// 速度，坐标，方向，大小（宽度、高度）
-
-	// 定义成圆的，红色，画子弹
-	private int speed = 10;
-
-	private int x;
-
-	private int y;
-
-	public static int width = SourceManager.bulletDn.getWidth();
-
-	public static int height = SourceManager.bulletDn.getHeight();
-
-	private Dir dir = Dir.DOWN;
-
-	private TankFrame tankFrame;
-
-	private Rectangle rectangle = new Rectangle();// 子弹形成的矩形
-
-	private boolean isAlive = false;// 默认子弹是失效的
-
-	private TankGroup group = TankGroup.RED;// 默认红队
+	 
 
 	public void die() {
 		this.isAlive = false;
@@ -53,18 +34,18 @@ public class Bullet {
 	/**
 	 * 碰撞方法
 	 * 
-	 * @param tank
+	 * @param enemyTank
 	 */
-	public boolean crash(Tank tank) {
+	public boolean crash(AbstractTank enemyTank) {
 		boolean isCrash = false;
-		if (this.group != tank.getGroup()) {// 同组的子弹不碰撞
+		if (this.group != enemyTank.group) {// 同组的子弹不碰撞
 			rectangle.setBounds(this.x, this.y, width, height);
-			isCrash = rectangle.intersects(tank.getRectangle());
+			isCrash = rectangle.intersects(enemyTank.rectangle);
 			if (isCrash) {// 如果矩形包含表示碰撞
 				this.die();
-				tank.die();
-				int eX = tank.getX() + tank.WIDTH / 2 - Explode.WIDTH / 2;
-				int eY = tank.getY() + tank.HEIGHT / 2 - Explode.HEIGHT / 2;
+				enemyTank.die();
+				int eX = enemyTank.x + enemyTank.WIDTH / 2 - Explode.WIDTH / 2;
+				int eY = enemyTank.y + enemyTank.HEIGHT / 2 - Explode.HEIGHT / 2;
 				this.tankFrame.explodes.add(new Explode(eX, eY, this.tankFrame));
 			}
 		}
