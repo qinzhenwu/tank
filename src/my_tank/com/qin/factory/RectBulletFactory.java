@@ -5,6 +5,7 @@ import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
+import my_tank.com.qin.model.RectBullet;
 import my_tank.com.qin.model.Tank;
 import my_tank.com.qin.product.BaseBullet;
 import my_tank.com.qin.product.BaseExplode;
@@ -17,17 +18,17 @@ import my_tank.com.qin.utils.Audio;
  * @author qinzhenwu
  *
  */
-public class GoodTankFactory extends GameFactory {
+public class RectBulletFactory extends GameFactory {
 
-	private GoodTankFactory() {
+	private RectBulletFactory() {
 
 	}
 
 	private static class GoodTF {
-		private static final GoodTankFactory instance = new GoodTankFactory();
+		private static final RectBulletFactory instance = new RectBulletFactory();
 	}
 
-	public static GoodTankFactory getInstance() {
+	public static RectBulletFactory getInstance() {
 		return GoodTF.instance;
 	}
 
@@ -40,7 +41,7 @@ public class GoodTankFactory extends GameFactory {
 	public BaseBullet createBullet(BaseTank tank, Dir dir) {
 		int bX = tank.x + tank.WIDTH / 2 - Bullet.width / 2;
 		int bY = tank.y + tank.WIDTH / 2 - Bullet.height / 2;// 计算子弹的位置
-		return new Bullet(bX, bY, dir, true, tank.tf, tank.group);// 向frame对象中的list中放入子弹对象，然后不断打印
+		return new RectBullet(bX, bY, dir, true, tank.tf, tank.group);// 向frame对象中的list中放入子弹对象，然后不断打印
 	}
 
 	@Override

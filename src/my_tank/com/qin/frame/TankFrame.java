@@ -16,24 +16,26 @@ import java.util.regex.Matcher;
 
 import javax.swing.LayoutStyle;
 
-import my_tank.com.qin.factory.AbstractFactory;
+import my_tank.com.qin.factory.GameFactory;
 import my_tank.com.qin.factory.GoodTankFactory;
+import my_tank.com.qin.factory.RectBulletFactory;
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
 import my_tank.com.qin.model.Tank;
-import my_tank.com.qin.product.AbstractTank;
+import my_tank.com.qin.product.BaseBullet;
+import my_tank.com.qin.product.BaseExplode;
+import my_tank.com.qin.product.BaseTank;
 import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
 
-	AbstractFactory factory=GoodTankFactory.getInstance();
-	AbstractTank tank=factory.createTank(200, 200, Dir.RIGHT, this);
+//	public GameFactory factory=GoodTankFactory.getInstance();
+ 	public GameFactory factory=RectBulletFactory.getInstance();
+	BaseTank tank=factory.createTank(200, 200, Dir.RIGHT,TankGroup.RED, this);
 	//Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
-	public List<AbstractTank> enemyTanks = new ArrayList<>();// 敌机坦克
-	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
-	public List<Bullet> bullets = new ArrayList();// 子弹
-	public List<Explode> explodes = new ArrayList();// 爆炸效果
-	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
+	public List<BaseTank> enemyTanks = new ArrayList<>();// 敌机坦克
+	public List<BaseBullet> bullets = new ArrayList();// 子弹
+	public List<BaseExplode> explodes = new ArrayList();// 爆炸效果
 	public int WIDTH = 800, HEIGHT = 800;
 
 	private Random random = new Random();
@@ -88,11 +90,11 @@ public class TankFrame extends Frame {
 		tank.paint(g);
 
 		for (int i = 0; i < bullets.size(); i++) {
-			Bullet b = bullets.get(i);
+			BaseBullet b = bullets.get(i);
 			b.paint(g);// 画出所有的子弹
 			if (enemyTanks.size() > 0) {
 				for (int k = 0; k < enemyTanks.size(); k++) {
-					AbstractTank enemyTank = enemyTanks.get(k);
+					BaseTank enemyTank = enemyTanks.get(k);
 					b.crash(enemyTank);
 				}
 				//boolean isKill = b.crash(tank);
@@ -108,7 +110,7 @@ public class TankFrame extends Frame {
 	private void drawExplode(Graphics g) {
 		if (explodes.size() > 0) {
 			for (int i = 0; i < explodes.size(); i++) {
-				Explode e = explodes.get(i);
+				BaseExplode e = explodes.get(i);
 				e.paint(g);
 			}
 		}
@@ -123,7 +125,7 @@ public class TankFrame extends Frame {
 	private void drawEnemy(Graphics g) {
 		if (enemyTanks.size() > 0) {
 			for (int i = 0; i < enemyTanks.size(); i++) {
-				AbstractTank tank = enemyTanks.get(i);
+				BaseTank tank = enemyTanks.get(i);
 				tank.paint(g);
 				int rand = random.nextInt(1000);
 				if (rand > 950) {

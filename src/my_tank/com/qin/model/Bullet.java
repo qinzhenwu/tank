@@ -11,8 +11,8 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
-import my_tank.com.qin.product.AbstractBullet;
-import my_tank.com.qin.product.AbstractTank;
+import my_tank.com.qin.product.BaseBullet;
+import my_tank.com.qin.product.BaseTank;
 import my_tank.com.qin.utils.Audio;
 import sun.audio.AudioData;
 
@@ -22,21 +22,15 @@ import sun.audio.AudioData;
  * @author qinzhenwu
  *
  */
-public class Bullet extends AbstractBullet{
-
-	 
-
-	public void die() {
-		this.isAlive = false;
-		new Thread(() -> new Audio("audio/explode.wav").play()).start();// 新建个子线程处理声音，在主线程中会引起卡顿
-	}
+public class Bullet extends BaseBullet {
 
 	/**
 	 * 碰撞方法
 	 * 
 	 * @param enemyTank
 	 */
-	public boolean crash(AbstractTank enemyTank) {
+	@Override
+	public void crash(BaseTank enemyTank) {
 		boolean isCrash = false;
 		if (this.group != enemyTank.group) {// 同组的子弹不碰撞
 			rectangle.setBounds(this.x, this.y, width, height);
@@ -46,10 +40,9 @@ public class Bullet extends AbstractBullet{
 				enemyTank.die();
 				int eX = enemyTank.x + enemyTank.WIDTH / 2 - Explode.WIDTH / 2;
 				int eY = enemyTank.y + enemyTank.HEIGHT / 2 - Explode.HEIGHT / 2;
-				this.tankFrame.explodes.add(new Explode(eX, eY, this.tankFrame));
+				this.tankFrame.explodes.add(enemyTank.tf.factory.createExplode(enemyTank));
 			}
 		}
-		return isCrash;
 	}
 
 	public Bullet(int x, int y, Dir dir, boolean isAlive, TankFrame tankFrame, TankGroup group) {

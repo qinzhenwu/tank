@@ -10,7 +10,7 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
-import my_tank.com.qin.product.AbstractTank;
+import my_tank.com.qin.product.BaseTank;
 import my_tank.com.qin.strategy.DefaultFireStrategy;
 import my_tank.com.qin.strategy.FireStrategy;
 import my_tank.com.qin.strategy.FourFireStrategy;
@@ -22,7 +22,7 @@ import my_tank.com.qin.utils.Audio;
  * @author qinzhenwu
  *
  */
-public class Tank extends AbstractTank {
+public class Tank extends BaseTank {
 
 	/**
 	 * 构造方法

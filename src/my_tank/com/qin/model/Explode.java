@@ -6,6 +6,7 @@ import com.sun.deploy.uitoolkit.impl.fx.ui.resources.ResourceManager;
 
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.product.BaseExplode;
 
 /**
  * 爆炸效果
@@ -13,7 +14,7 @@ import my_tank.com.qin.manager.SourceManager;
  * @author qinzhenwu
  *
  */
-public class Explode {
+public class Explode extends BaseExplode {
 	private int x;// 坐标
 
 	private int y;// 坐标
@@ -35,6 +36,7 @@ public class Explode {
 		this.isOver = false;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if (step >= 0 && step < 16) {// 开始展示爆炸效果
 			g.drawImage(SourceManager.explode[step++], x, y, null);

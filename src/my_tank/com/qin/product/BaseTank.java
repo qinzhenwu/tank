@@ -16,7 +16,7 @@ import my_tank.com.qin.strategy.FireStrategy;
  * @author qinzhenwu
  *
  */
-public abstract class AbstractTank {
+public abstract class BaseTank {
 	public int x;// зјБъ
 
 	public int y;// зјБъ
