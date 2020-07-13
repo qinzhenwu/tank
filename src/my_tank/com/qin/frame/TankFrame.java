@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.LayoutManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -12,14 +11,10 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-
-import javax.swing.LayoutStyle;
 
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
 import my_tank.com.qin.model.Tank;
-import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
 
@@ -28,7 +23,6 @@ public class TankFrame extends Frame {
 	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
-	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
 	public int WIDTH = 800, HEIGHT = 800;
 
 	private Random random = new Random();
