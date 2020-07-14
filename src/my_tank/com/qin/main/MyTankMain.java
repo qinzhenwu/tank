@@ -11,13 +11,7 @@ public class MyTankMain {
 
 	public static void main(String[] args) {
 		TankFrame tankFrame = new TankFrame();
-		for (int i = 0; i < 5; i++) {
-			int x = 150 + (i * 80);
-			int y = 100;
-			Tank enTank = new Tank(x, y, Dir.DOWN, tankFrame, TankGroup.BLUE);
-			enTank.setMove(true);
-			tankFrame.enemyTanks.add(enTank);
-		}
+	
 		//new Thread(()->new Audio("audio/war1.wav").loop()).start();
 		while (true) {
 			try {

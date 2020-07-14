@@ -14,19 +14,17 @@ import java.util.Random;
 
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
+import my_tank.com.qin.model.GameModel;
 import my_tank.com.qin.model.Tank;
 
 public class TankFrame extends Frame {
 
-	Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
-	public List<Tank> enemyTanks = new ArrayList<>();// 敌机坦克
-	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
-	public List<Bullet> bullets = new ArrayList();// 子弹
-	public List<Explode> explodes = new ArrayList();// 爆炸效果
-	public int WIDTH = 800, HEIGHT = 800;
+	
+	public static int WIDTH = 800, HEIGHT = 800;
 
-	private Random random = new Random();
 
+
+	GameModel gameModel=new GameModel();
 	public TankFrame() {
 
 		setSize(WIDTH, HEIGHT);
@@ -68,76 +66,26 @@ public class TankFrame extends Frame {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		Color c = g.getColor();
-		g.setColor(Color.WHITE);
-		g.drawString("子弹的数量：" + bullets.size(), 10, 80);
-		g.drawString("敌人的数量：" + enemyTanks.size(), 10, 110);
-		g.drawString("爆炸的数量：" + explodes.size(), 10, 140);
-		g.setColor(c);
-		tank.paint(g);
-
-		for (int i = 0; i < bullets.size(); i++) {
-			Bullet b = bullets.get(i);
-			b.paint(g);// 画出所有的子弹
-			if (enemyTanks.size() > 0) {
-				for (int k = 0; k < enemyTanks.size(); k++) {
-					Tank enemyTank = enemyTanks.get(k);
-					b.crash(enemyTank);
-				}
-				//boolean isKill = b.crash(tank);
-//				if (isKill) {不会被打，无敌
-//					explodes.add(new Explode(tank.getX(), tank.getY(), this));
-//				}
-			}
-		}
-		drawEnemy(g);
-		drawExplode(g);
+		gameModel.paint(g);
 	}
 
-	private void drawExplode(Graphics g) {
-		if (explodes.size() > 0) {
-			for (int i = 0; i < explodes.size(); i++) {
-				Explode e = explodes.get(i);
-				e.paint(g);
-			}
-		}
-	}
-
-	/**
-	 * 画出敌机，并判断子弹是否命中
-	 * 
-	 * @param g
-	 * @param b
-	 */
-	private void drawEnemy(Graphics g) {
-		if (enemyTanks.size() > 0) {
-			for (int i = 0; i < enemyTanks.size(); i++) {
-				Tank tank = enemyTanks.get(i);
-				tank.paint(g);
-				int rand = random.nextInt(1000);
-				if (rand > 950) {
-					tank.fire();
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * 获取到随机方向，不能与原来的方向一致
-	 * 
-	 * @param tank
-	 * @return
-	 */
-	public Dir getRandomDir(Tank tank) {
-		int di = random.nextInt(4);// 随机0-3
-		Dir d = Dir.values()[di];
-		Dir od = tank.getDir();
-		if (od == d) {
-			return getRandomDir(tank);
-		}
-		return d;
-	}
+	
+//
+//	/**
+//	 * 获取到随机方向，不能与原来的方向一致
+//	 * 
+//	 * @param tank
+//	 * @return
+//	 */
+//	public Dir getRandomDir(Tank tank) {
+//		int di = random.nextInt(4);// 随机0-3
+//		Dir d = Dir.values()[di];
+//		Dir od = tank.getDir();
+//		if (od == d) {
+//			return getRandomDir(tank);
+//		}
+//		return d;
+//	}
 
 	/**
 	 * 键盘监听类
@@ -202,10 +150,10 @@ public class TankFrame extends Frame {
 				is_d = false;
 				break;
 			case KeyEvent.VK_CONTROL:// ctl键
-				tank.fire();
+				gameModel.tank.fire();
 				break;
 			case KeyEvent.VK_SHIFT:// SHIFT键停止tank
-				tank.setMove(false);
+				gameModel.tank.setMove(false);
 				break;
 			default:
 				break;
@@ -215,19 +163,19 @@ public class TankFrame extends Frame {
 
 		private void setDir() {
 			if (is_u) {
-				tank.setDir(Dir.UP);
+				gameModel.tank.setDir(Dir.UP);
 			}
 			if (is_d) {
-				tank.setDir(Dir.DOWN);
+				gameModel.tank.setDir(Dir.DOWN);
 			}
 			if (is_l) {
-				tank.setDir(Dir.LEFT);
+				gameModel.tank.setDir(Dir.LEFT);
 			}
 			if (is_r) {
-				tank.setDir(Dir.RIGHT);
+				gameModel.tank.setDir(Dir.RIGHT);
 			}
 			if (is_u || is_d || is_l || is_r) {// 按了方向键，进行移动
-				tank.setMove(true);
+				gameModel.tank.setMove(true);
 			}
 
 		}

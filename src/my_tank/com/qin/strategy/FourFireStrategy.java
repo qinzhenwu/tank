@@ -19,7 +19,7 @@ public class FourFireStrategy implements FireStrategy {
 		int bY = tank.getY() + tank.WIDTH / 2 - Bullet.height / 2;// 计算子弹的位置
 		Dir[] dirs = Dir.values();
 		for (Dir dir : dirs) {// 四个方向的
-			new Bullet(bX, bY, dir, true, tank.getTf(), tank.getGroup());// 向frame对象中的list中放入子弹对象，然后不断打印
+			new Bullet(bX, bY, dir, true, tank.gameModel, tank.getGroup());// 向frame对象中的list中放入子弹对象，然后不断打印
 		}
 		new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
 

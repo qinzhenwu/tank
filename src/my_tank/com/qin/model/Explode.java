@@ -13,25 +13,22 @@ import my_tank.com.qin.manager.SourceManager;
  * @author qinzhenwu
  *
  */
-public class Explode {
-	private int x;// 坐标
-
-	private int y;// 坐标
-
+public class Explode extends GameObject {
+	 
 	private int step = 0;// 当前效果刷了多少次，一共16张图片，超过16，重置为0
 
-	private TankFrame tf;// 持有frame对象
+	private GameModel gameModel;// 持有frame对象
 
 	public static int WIDTH = SourceManager.explode[0].getWidth();
 	public static int HEIGHT = SourceManager.explode[0].getHeight();
 
 	private boolean isOver = true;// 爆炸结束
 
-	public Explode(int x, int y, TankFrame tf) {
+	public Explode(int x, int y, GameModel gameModel) {
 		super();
 		this.x = x;
 		this.y = y;
-		this.tf = tf;
+		this.gameModel = gameModel;
 		this.isOver = false;
 	}
 
@@ -43,7 +40,7 @@ public class Explode {
 			isOver = true;
 		}
 		if (isOver) {
-			tf.explodes.remove(this);
+			gameModel.gameObjects.remove(this);
 		}
 
 	}

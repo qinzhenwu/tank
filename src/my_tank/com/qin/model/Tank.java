@@ -21,11 +21,7 @@ import my_tank.com.qin.utils.Audio;
  * @author qinzhenwu
  *
  */
-public class Tank {
-
-	private int x;// 坐标
-
-	private int y;// 坐标
+public class Tank extends GameObject {
 
 	private Dir dir = Dir.DOWN;// 方向
 
@@ -39,7 +35,7 @@ public class Tank {
 
 	private boolean isAlive = true;
 
-	private TankFrame tf;// 持有frame对象
+	public GameModel gameModel;// 持有frame对象
 
 	private TankGroup group = TankGroup.RED;// 默认红队
 
@@ -56,18 +52,18 @@ public class Tank {
 	 * @param y
 	 * @param dir
 	 */
-	public Tank(int x, int y, Dir dir, TankFrame tf, TankGroup group) {
+	public Tank(int x, int y, Dir dir, GameModel gameModel, TankGroup group) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-		this.setTf(tf);
+		this.gameModel = gameModel;
 		this.group = group;
 		this.rectangle.x = this.x;
 		this.rectangle.y = this.y;
 		this.rectangle.width = WIDTH;
 		this.rectangle.height = HEIGHT;
-		//创建tank时指定发射策略
+		// 创建tank时指定发射策略
 		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
 			this.fireStrategy = new FourFireStrategy();
 		} else {
@@ -81,7 +77,7 @@ public class Tank {
 
 	public void paint(Graphics g) {
 		if (!isAlive) {
-			getTf().enemyTanks.remove(this);
+			gameModel.gameObjects.remove(this);
 		}
 		boundsCheck();
 		rectangle.x = this.x;
@@ -102,14 +98,14 @@ public class Tank {
 		if (this.x <= 2) {
 			this.x = 2;
 		}
-		if (this.x >= (getTf().WIDTH - this.WIDTH - 2)) {
-			this.x = (getTf().WIDTH - this.WIDTH - 2);
+		if (this.x >= (TankFrame.WIDTH - this.WIDTH - 2)) {
+			this.x = (TankFrame.WIDTH - this.WIDTH - 2);
 		}
 		if (this.y <= 32) {// 标题栏的宽度
 			this.y = 32;
 		}
-		if (y >= (getTf().HEIGHT - this.HEIGHT - 2)) {
-			y = (getTf().HEIGHT - this.HEIGHT - 2);
+		if (y >= (TankFrame.HEIGHT - this.HEIGHT - 2)) {
+			y = (TankFrame.HEIGHT - this.HEIGHT - 2);
 		}
 	}
 
@@ -123,6 +119,10 @@ public class Tank {
 		// 敌机坦克方向随机
 		if (this.group == TankGroup.BLUE && random.nextInt(1000) > 965) {
 			this.dir = Dir.values()[random.nextInt(4)];
+			int rand = random.nextInt(1000);
+			if (rand > 500) {//随机fire的方法移动到move方法中，
+				fire();
+			}
 		}
 
 		switch (dir) {
@@ -247,12 +247,6 @@ public class Tank {
 		this.isMove = isMove;
 	}
 
-	public TankFrame getTf() {
-		return tf;
-	}
-
-	public void setTf(TankFrame tf) {
-		this.tf = tf;
-	}
+ 
 
 }

@@ -20,16 +20,12 @@ import sun.audio.AudioData;
  * @author qinzhenwu
  *
  */
-public class Bullet {
+public class Bullet extends GameObject {
 
 	// 速度，坐标，方向，大小（宽度、高度）
 
 	// 定义成圆的，红色，画子弹
 	private int speed = 10;
-
-	private int x;
-
-	private int y;
 
 	public static int width = SourceManager.bulletDn.getWidth();
 
@@ -37,7 +33,7 @@ public class Bullet {
 
 	private Dir dir = Dir.DOWN;
 
-	private TankFrame tankFrame;
+	private GameModel gameModel;
 
 	private Rectangle rectangle = new Rectangle();// 子弹形成的矩形
 
@@ -65,27 +61,27 @@ public class Bullet {
 				tank.die();
 				int eX = tank.getX() + tank.WIDTH / 2 - Explode.WIDTH / 2;
 				int eY = tank.getY() + tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-				this.tankFrame.explodes.add(new Explode(eX, eY, this.tankFrame));
+				this.gameModel.gameObjects.add(new Explode(eX, eY, gameModel));
 			}
 		}
 		return isCrash;
 	}
 
-	public Bullet(int x, int y, Dir dir, boolean isAlive, TankFrame tankFrame, TankGroup group) {
+	public Bullet(int x, int y, Dir dir, boolean isAlive, GameModel gameModel, TankGroup group) {
 		super();
 		this.x = x;
 		this.dir = dir;
 		this.y = y;
 		this.group = group;
 		this.isAlive = isAlive;
-		this.tankFrame = tankFrame;
-		this.tankFrame.bullets.add(this);
+		this.gameModel = gameModel;
+		this.gameModel.gameObjects.add(this);
 	}
 
 	public void paint(Graphics g) {
 		// 采用不同的策略
 		if (!this.isAlive) {
-			tankFrame.bullets.remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
+			gameModel.gameObjects.remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
 		}
 		switch (dir) {
 		case DOWN:
@@ -107,7 +103,7 @@ public class Bullet {
 		default:
 			break;
 		}
-		if (x < 0 || y < 0 || y > tankFrame.WIDTH || x > tankFrame.HEIGHT) {// 子弹失效的原因，越界
+		if (x < 0 || y < 0 || y > TankFrame.WIDTH || x > TankFrame.HEIGHT) {// 子弹失效的原因，越界
 			this.setAlive(false);
 		}
 	}
@@ -158,14 +154,6 @@ public class Bullet {
 
 	public void setHeight(int height) {
 		this.height = height;
-	}
-
-	public TankFrame getTankFrame() {
-		return tankFrame;
-	}
-
-	public void setTankFrame(TankFrame tankFrame) {
-		this.tankFrame = tankFrame;
 	}
 
 }
