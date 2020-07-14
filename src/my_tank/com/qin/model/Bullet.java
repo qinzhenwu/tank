@@ -33,38 +33,17 @@ public class Bullet extends GameObject {
 
 	private Dir dir = Dir.DOWN;
 
-	private GameModel gameModel;
+	public GameModel gameModel;
 
-	private Rectangle rectangle = new Rectangle();// 子弹形成的矩形
+	public Rectangle rectangle = new Rectangle();// 子弹形成的矩形
 
 	private boolean isAlive = false;// 默认子弹是失效的
 
-	private TankGroup group = TankGroup.RED;// 默认红队
+	public TankGroup group = TankGroup.RED;// 默认红队
 
 	public void die() {
 		this.isAlive = false;
 		new Thread(() -> new Audio("audio/explode.wav").play()).start();// 新建个子线程处理声音，在主线程中会引起卡顿
-	}
-
-	/**
-	 * 碰撞方法
-	 * 
-	 * @param tank
-	 */
-	public boolean crash(Tank tank) {
-		boolean isCrash = false;
-		if (this.group != tank.getGroup()) {// 同组的子弹不碰撞
-			rectangle.setBounds(this.x, this.y, width, height);
-			isCrash = rectangle.intersects(tank.getRectangle());
-			if (isCrash) {// 如果矩形包含表示碰撞
-				this.die();
-				tank.die();
-				int eX = tank.getX() + tank.WIDTH / 2 - Explode.WIDTH / 2;
-				int eY = tank.getY() + tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-				this.gameModel.gameObjects.add(new Explode(eX, eY, gameModel));
-			}
-		}
-		return isCrash;
 	}
 
 	public Bullet(int x, int y, Dir dir, boolean isAlive, GameModel gameModel, TankGroup group) {
@@ -83,6 +62,7 @@ public class Bullet extends GameObject {
 		if (!this.isAlive) {
 			gameModel.gameObjects.remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
 		}
+		rectangle.setBounds(x, y, width, height);
 		switch (dir) {
 		case DOWN:
 			this.y += speed;

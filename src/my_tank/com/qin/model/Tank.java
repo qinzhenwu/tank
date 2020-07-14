@@ -23,6 +23,10 @@ import my_tank.com.qin.utils.Audio;
  */
 public class Tank extends GameObject {
 
+	public int oldX;
+
+	public int oldY;
+
 	private Dir dir = Dir.DOWN;// 方向
 
 	private int speed = 5;
@@ -80,8 +84,7 @@ public class Tank extends GameObject {
 			gameModel.gameObjects.remove(this);
 		}
 		boundsCheck();
-		rectangle.x = this.x;
-		rectangle.y = this.y;// 设置对应矩形的大小
+		
 		if (!isMove) {
 			drawStopTank(g);
 			return;
@@ -120,11 +123,12 @@ public class Tank extends GameObject {
 		if (this.group == TankGroup.BLUE && random.nextInt(1000) > 965) {
 			this.dir = Dir.values()[random.nextInt(4)];
 			int rand = random.nextInt(1000);
-			if (rand > 500) {//随机fire的方法移动到move方法中，
+			if (rand > 500) {// 随机fire的方法移动到move方法中，
 				fire();
 			}
 		}
-
+		oldX = x;
+		oldY = y;
 		switch (dir) {
 		case DOWN:
 			this.y += speed;
@@ -149,6 +153,8 @@ public class Tank extends GameObject {
 		default:
 			break;
 		}
+		rectangle.x = this.x;
+		rectangle.y = this.y;// 设置对应矩形的大小
 	}
 
 	/**
@@ -246,7 +252,5 @@ public class Tank extends GameObject {
 	public void setMove(boolean isMove) {
 		this.isMove = isMove;
 	}
-
- 
 
 }

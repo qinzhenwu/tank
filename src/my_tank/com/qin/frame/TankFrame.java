@@ -70,22 +70,7 @@ public class TankFrame extends Frame {
 	}
 
 	
-//
-//	/**
-//	 * 获取到随机方向，不能与原来的方向一致
-//	 * 
-//	 * @param tank
-//	 * @return
-//	 */
-//	public Dir getRandomDir(Tank tank) {
-//		int di = random.nextInt(4);// 随机0-3
-//		Dir d = Dir.values()[di];
-//		Dir od = tank.getDir();
-//		if (od == d) {
-//			return getRandomDir(tank);
-//		}
-//		return d;
-//	}
+
 
 	/**
 	 * 键盘监听类
