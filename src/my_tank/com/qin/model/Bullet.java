@@ -33,8 +33,6 @@ public class Bullet extends GameObject {
 
 	private Dir dir = Dir.DOWN;
 
-	public GameModel gameModel;
-
 	public Rectangle rectangle = new Rectangle();// 子弹形成的矩形
 
 	private boolean isAlive = false;// 默认子弹是失效的
@@ -43,26 +41,25 @@ public class Bullet extends GameObject {
 
 	public void die() {
 		this.isAlive = false;
-		new Thread(() -> new Audio("audio/explode.wav").play()).start();// 新建个子线程处理声音，在主线程中会引起卡顿
+		//new Thread(() -> new Audio("audio/explode.wav").play()).start();// 新建个子线程处理声音，在主线程中会引起卡顿
 	}
 
-	public Bullet(int x, int y, Dir dir, boolean isAlive, GameModel gameModel, TankGroup group) {
+	public Bullet(int x, int y, Dir dir, boolean isAlive, TankGroup group) {
 		super();
 		this.x = x;
 		this.dir = dir;
 		this.y = y;
 		this.group = group;
 		this.isAlive = isAlive;
-		this.gameModel = gameModel;
-		this.gameModel.gameObjects.add(this);
+		GameModel.getInstance().add(this);
 	}
 
 	public void paint(Graphics g) {
 		// 采用不同的策略
 		if (!this.isAlive) {
-			gameModel.gameObjects.remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
+			GameModel.getInstance().remove(this);// 此处list的remove方法，如果frame采用iterator迭代器的方式遍历的话会报错，经典面试题。
 		}
-		rectangle.setBounds(x, y, width, height);
+		
 		switch (dir) {
 		case DOWN:
 			this.y += speed;
@@ -86,6 +83,7 @@ public class Bullet extends GameObject {
 		if (x < 0 || y < 0 || y > TankFrame.WIDTH || x > TankFrame.HEIGHT) {// 子弹失效的原因，越界
 			this.setAlive(false);
 		}
+		rectangle.setBounds(x, y, width, height);
 	}
 
 	public boolean isAlive() {

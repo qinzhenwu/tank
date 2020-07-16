@@ -11,9 +11,13 @@ import java.awt.Graphics;
  */
 public abstract class GameObject {
 
-	public int x;
+	protected int x;
 
-	public int y;
+	protected int y;
+
+	protected int width;
+
+	protected int height;
 
 	/**
 	 * »æ»­·½·¨
@@ -21,8 +25,21 @@ public abstract class GameObject {
 	 * @param g
 	 */
 	public abstract void paint(Graphics g);
-	
-	
-	
-	
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 }

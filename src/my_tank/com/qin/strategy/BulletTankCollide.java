@@ -2,6 +2,7 @@ package my_tank.com.qin.strategy;
 
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
+import my_tank.com.qin.model.GameModel;
 import my_tank.com.qin.model.GameObject;
 import my_tank.com.qin.model.Tank;
 
@@ -39,7 +40,7 @@ public class BulletTankCollide implements CollideStrategy {
 				tank.die();
 				int eX = tank.getX() + tank.WIDTH / 2 - Explode.WIDTH / 2;
 				int eY = tank.getY() + tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-				bullet.gameModel.gameObjects.add(new Explode(eX, eY, tank.gameModel));
+				GameModel.getInstance().add(new Explode(eX, eY));
 			}
 		}
 		return isCrash;

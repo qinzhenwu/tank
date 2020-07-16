@@ -19,14 +19,12 @@ import my_tank.com.qin.model.Tank;
 
 public class TankFrame extends Frame {
 
-	
 	public static int WIDTH = 800, HEIGHT = 800;
 
+	GameModel gameModel = GameModel.getInstance();
 
-
-	GameModel gameModel=new GameModel();
 	public TankFrame() {
-
+		gameModel.init();
 		setSize(WIDTH, HEIGHT);
 		setResizable(false);
 		setVisible(true);
@@ -69,9 +67,6 @@ public class TankFrame extends Frame {
 		gameModel.paint(g);
 	}
 
-	
-
-
 	/**
 	 * º¸≈Ãº‡Ã˝¿‡
 	 * 
@@ -106,7 +101,7 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_DOWN:
 				is_d = true;
-				
+
 				break;
 
 			default:

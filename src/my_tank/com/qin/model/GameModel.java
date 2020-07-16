@@ -21,24 +21,61 @@ import my_tank.com.qin.strategy.TankTankCollide;
  *
  */
 public class GameModel {
-	public Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
-	public List<GameObject> gameObjects = new ArrayList<>();
-	private CollideStrategy collideStrategy = new BulletTankCollide();
-	private CollideStrategy tankCollide = new TankTankCollide();
-	private CollideChain collideChain = new CollideChain();
 
-	public GameModel() {
-		addEnemy();
+	private static final GameModel INSTANCE = new GameModel();// ¶öººÊ½µ¥Àý
+	private List<GameObject> gameObjects = new ArrayList<>();
+
+	private GameModel() {
+
 	}
+
+	public static GameModel getInstance() {
+		return INSTANCE;
+	}
+
+	private CollideChain collideChain;
+
+	public Tank tank;
+
+	public void init() {
+		collideChain = new CollideChain();
+		tank = new Tank(200, 200, Dir.RIGHT, TankGroup.RED);
+		addEnemy();
+		addWall();
+	}
+
+	public void add(GameObject gameObject) {
+		gameObjects.add(gameObject);
+	}
+
+	public void remove(GameObject gameObject) {
+		gameObjects.remove(gameObject);
+	}
+
+//	public Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
+
+//	private CollideStrategy collideStrategy = new BulletTankCollide();
+//	private CollideStrategy tankCollide = new TankTankCollide();
+
+//	public GameModel() {
+//		addEnemy();
+//	}
 
 	private void addEnemy() {
 		for (int i = 0; i < 8; i++) {
 			int x = 150 + (i * 80);
 			int y = 100;
-			Tank enTank = new Tank(x, y, Dir.DOWN, this, TankGroup.BLUE);
+			Tank enTank = new Tank(x, y, Dir.DOWN, TankGroup.BLUE);
 			enTank.setMove(true);
-			this.gameObjects.add(enTank);
+			add(enTank);
 		}
+	}
+
+	private void addWall() {
+		new Wall(50, 60, 50, 220);
+		new Wall(400, 500, 200, 50);
+		new Wall(50, 400, 200, 50);
+
 	}
 
 	public void paint(Graphics g) {

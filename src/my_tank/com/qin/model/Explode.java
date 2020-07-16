@@ -17,18 +17,16 @@ public class Explode extends GameObject {
 	 
 	private int step = 0;// 当前效果刷了多少次，一共16张图片，超过16，重置为0
 
-	private GameModel gameModel;// 持有frame对象
 
 	public static int WIDTH = SourceManager.explode[0].getWidth();
 	public static int HEIGHT = SourceManager.explode[0].getHeight();
 
 	private boolean isOver = true;// 爆炸结束
 
-	public Explode(int x, int y, GameModel gameModel) {
+	public Explode(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
-		this.gameModel = gameModel;
 		this.isOver = false;
 	}
 
@@ -40,7 +38,7 @@ public class Explode extends GameObject {
 			isOver = true;
 		}
 		if (isOver) {
-			gameModel.gameObjects.remove(this);
+			GameModel.getInstance().remove(this);
 		}
 
 	}

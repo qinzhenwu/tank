@@ -18,7 +18,7 @@ public class CollideChain implements CollideStrategy {
 	private List<CollideStrategy> collideStrategys = new LinkedList<>();// 所有的碰撞策略
 
 	public CollideChain() {
-		add(new BulletTankCollide()).add(new TankTankCollide());
+		add(new BulletTankCollide()).add(new TankTankCollide()).add(new WallTankCollide()).add(new BulletWallCollide());
 	}
 
 	/**

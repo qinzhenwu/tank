@@ -11,8 +11,8 @@ import my_tank.com.qin.frame.TankGroup;
  */
 public class NuclearBomb extends Bullet{
 
-	public NuclearBomb(int x, int y, Dir dir, boolean isAlive, GameModel gameModel, TankGroup group) {
-		super(x, y, dir, isAlive, gameModel, group);
+	public NuclearBomb(int x, int y, Dir dir, boolean isAlive, TankGroup group) {
+		super(x, y, dir, isAlive, group);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -56,12 +56,11 @@ public class Tank extends GameObject {
 	 * @param y
 	 * @param dir
 	 */
-	public Tank(int x, int y, Dir dir, GameModel gameModel, TankGroup group) {
+	public Tank(int x, int y, Dir dir, TankGroup group) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-		this.gameModel = gameModel;
 		this.group = group;
 		this.rectangle.x = this.x;
 		this.rectangle.y = this.y;
@@ -81,7 +80,7 @@ public class Tank extends GameObject {
 
 	public void paint(Graphics g) {
 		if (!isAlive) {
-			gameModel.gameObjects.remove(this);
+			GameModel.getInstance().remove(this);
 		}
 		boundsCheck();
 		
@@ -187,6 +186,7 @@ public class Tank extends GameObject {
 
 	public void die() {
 		this.isAlive = false;
+		new Thread(() -> new Audio("audio/explode.wav").play()).start();
 	}
 
 	public Rectangle getRectangle() {
