@@ -36,7 +36,7 @@ public class Wall extends GameObject {
 	@Override
 	public void paint(Graphics g) {
 		Color c = g.getColor();
-		g.setColor(Color.RED);
+		g.setColor(Color.YELLOW);
 		
 		g.fillRect(x, y, width, height);
 		//g.drawRect(x, y, width, height);

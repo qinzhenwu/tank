@@ -65,6 +65,9 @@ public class Tank extends GameObject {
 		super();
 		this.x = x;
 		this.y = y;
+		
+		this.oldX=x;
+		this.oldY=y;
 		this.dir = dir;
 		this.group = group;
 		this.rectangle.x = this.x;

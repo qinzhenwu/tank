@@ -42,6 +42,7 @@ public class GameModel {
 		tank = new Tank(200, 200, Dir.RIGHT, TankGroup.RED);
 		addEnemy();
 		addWall();
+		//gameObjects.add(tank);
 	}
 
 	public void add(GameObject gameObject) {
@@ -62,7 +63,7 @@ public class GameModel {
 //	}
 
 	private void addEnemy() {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 10; i++) {
 			int x = 150 + (i * 80);
 			int y = 100;
 			Tank enTank = new Tank(x, y, Dir.DOWN, TankGroup.BLUE);
