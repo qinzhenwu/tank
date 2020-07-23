@@ -1,6 +1,7 @@
 package my_tank.com.qin.model;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 /**
  * 游戏对象，所有具体的游戏对象都需要集成他<br>
@@ -9,7 +10,7 @@ import java.awt.Graphics;
  * @author qinzhenwu
  *
  */
-public abstract class GameObject {
+public abstract class GameObject implements Serializable{
 
 	protected int x;
 

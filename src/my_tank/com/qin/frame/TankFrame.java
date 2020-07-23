@@ -101,8 +101,7 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_DOWN:
 				is_d = true;
-
-				break;
+	
 
 			default:
 				break;
@@ -134,6 +133,14 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_SHIFT:// SHIFT¼üÍ£Ö¹tank
 				gameModel.tank.setMove(false);
+				break;
+			case KeyEvent.VK_S:
+				System.out.println("´æµµ");
+				gameModel.save();
+				break;
+			case KeyEvent.VK_L:
+				gameModel.load();
+				System.out.println("¶Áµµ");
 				break;
 			default:
 				break;
