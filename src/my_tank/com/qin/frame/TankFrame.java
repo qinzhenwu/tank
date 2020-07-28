@@ -10,8 +10,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 import javax.swing.LayoutStyle;
@@ -23,13 +26,18 @@ import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
 
-	Tank tank = new Tank(200, 200, Dir.RIGHT, this, TankGroup.RED);
+	public static final TankFrame INSTANCE = new TankFrame();
+
+	private Random r=new Random();
+	
 	public List<Tank> enemyTanks = new ArrayList<>();// 敌机坦克
-	public List<Tank> teamTanks = new ArrayList<>();// 友机坦克
+	
+	public Map<String, Tank> tanks=new HashMap<>();
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
 	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
 	public int WIDTH = 800, HEIGHT = 800;
+	Tank tank = new Tank(r.nextInt(WIDTH), r.nextInt(HEIGHT), Dir.RIGHT, this, TankGroup.RED);
 
 	private Random random = new Random();
 
@@ -90,7 +98,7 @@ public class TankFrame extends Frame {
 					Tank enemyTank = enemyTanks.get(k);
 					b.crash(enemyTank);
 				}
-				//boolean isKill = b.crash(tank);
+				// boolean isKill = b.crash(tank);
 //				if (isKill) {不会被打，无敌
 //					explodes.add(new Explode(tank.getX(), tank.getY(), this));
 //				}
@@ -179,7 +187,7 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_DOWN:
 				is_d = true;
-				
+
 				break;
 
 			default:
@@ -240,4 +248,24 @@ public class TankFrame extends Frame {
 
 	}
 
+	public Tank getTank() {
+		return tank;
+	}
+
+	public void setTank(Tank tank) {
+		this.tank = tank;
+	}
+
+	public Tank findTankByUUID(UUID id) {
+		 
+		return tanks.get(id);
+	}
+
+	public void addTank(Tank t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+ 
+	
 }

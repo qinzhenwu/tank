@@ -18,7 +18,6 @@ public class MyTankMain {
 			enTank.setMove(true);
 			tankFrame.enemyTanks.add(enTank);
 		}
-		tankFrame.allCrashTanks.addAll(tankFrame.teamTanks);
 		tankFrame.allCrashTanks.addAll(tankFrame.enemyTanks);
 		//new Thread(()->new Audio("audio/war1.wav").loop()).start();
 		while (true) {

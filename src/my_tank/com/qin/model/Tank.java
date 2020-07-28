@@ -5,11 +5,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.math.BigDecimal;
 import java.util.Random;
+import java.util.UUID;
 
 import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.net.TankJoinMsg;
 import my_tank.com.qin.strategy.DefaultFireStrategy;
 import my_tank.com.qin.strategy.FireStrategy;
 import my_tank.com.qin.strategy.FourFireStrategy;
@@ -47,6 +49,8 @@ public class Tank {
 
 	private Rectangle rectangle = new Rectangle();// tank形成的矩形
 
+	private UUID id;
+
 	private FireStrategy fireStrategy;// 发射策略
 
 	/**
@@ -62,12 +66,13 @@ public class Tank {
 		this.y = y;
 		this.dir = dir;
 		this.setTf(tf);
+		this.id = UUID.randomUUID();
 		this.group = group;
 		this.rectangle.x = this.x;
 		this.rectangle.y = this.y;
 		this.rectangle.width = WIDTH;
 		this.rectangle.height = HEIGHT;
-		//创建tank时指定发射策略
+		// 创建tank时指定发射策略
 		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
 			this.fireStrategy = new FourFireStrategy();
 		} else {
@@ -75,6 +80,19 @@ public class Tank {
 		}
 	}
 
+	public Tank(TankJoinMsg msg) {
+		this.x = msg.x;
+		this.y = msg.y;
+		this.dir = msg.dir;
+		this.isMove = msg.moving;
+		this.group = msg.group;
+		this.id = msg.id;
+		
+		rectangle.x = this.x;
+		rectangle.y = this.y;
+		rectangle.width = WIDTH;
+		rectangle.height = HEIGHT;
+	}
 	public void fire() {
 		fireStrategy.fire(this);
 	}
@@ -181,6 +199,14 @@ public class Tank {
 
 	public void die() {
 		this.isAlive = false;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public Rectangle getRectangle() {
