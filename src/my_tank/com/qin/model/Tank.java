@@ -31,7 +31,7 @@ public class Tank {
 
 	private Dir dir = Dir.DOWN;// 方向
 
-	private int speed = 5;
+	private int speed = 3;
 
 	private boolean isMove = false;// 设定弹框是否可移动
 
@@ -41,7 +41,7 @@ public class Tank {
 
 	private boolean isAlive = true;
 
-	private TankFrame tf;// 持有frame对象
+	public TankFrame tf;
 
 	private TankGroup group = TankGroup.RED;// 默认红队
 
@@ -49,7 +49,7 @@ public class Tank {
 
 	private Rectangle rectangle = new Rectangle();// tank形成的矩形
 
-	private UUID id;
+	private UUID id = UUID.randomUUID();;
 
 	private FireStrategy fireStrategy;// 发射策略
 
@@ -65,8 +65,7 @@ public class Tank {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-		this.setTf(tf);
-		this.id = UUID.randomUUID();
+		this.tf = tf;
 		this.group = group;
 		this.rectangle.x = this.x;
 		this.rectangle.y = this.y;
@@ -87,20 +86,27 @@ public class Tank {
 		this.isMove = msg.moving;
 		this.group = msg.group;
 		this.id = msg.id;
-		
+
 		rectangle.x = this.x;
 		rectangle.y = this.y;
 		rectangle.width = WIDTH;
 		rectangle.height = HEIGHT;
 	}
+
 	public void fire() {
 		fireStrategy.fire(this);
 	}
 
 	public void paint(Graphics g) {
 		if (!isAlive) {
-			getTf().enemyTanks.remove(this);
+			this.tf.enemyTanks.remove(this);
 		}
+		Color c = g.getColor();
+		g.setColor(Color.YELLOW);
+		g.drawString(id.toString(), this.x, this.y - 20);
+		g.drawString("live=" + isAlive, x, y - 10);
+		g.setColor(c);
+
 		boundsCheck();
 		rectangle.x = this.x;
 		rectangle.y = this.y;// 设置对应矩形的大小
@@ -120,14 +126,14 @@ public class Tank {
 		if (this.x <= 2) {
 			this.x = 2;
 		}
-		if (this.x >= (getTf().WIDTH - this.WIDTH - 2)) {
-			this.x = (getTf().WIDTH - this.WIDTH - 2);
+		if (this.x >= (TankFrame.INSTANCE.WIDTH - this.WIDTH - 2)) {
+			this.x = (TankFrame.INSTANCE.WIDTH - this.WIDTH - 2);
 		}
 		if (this.y <= 32) {// 标题栏的宽度
 			this.y = 32;
 		}
-		if (y >= (getTf().HEIGHT - this.HEIGHT - 2)) {
-			y = (getTf().HEIGHT - this.HEIGHT - 2);
+		if (y >= (TankFrame.INSTANCE.HEIGHT - this.HEIGHT - 2)) {
+			y = (TankFrame.INSTANCE.HEIGHT - this.HEIGHT - 2);
 		}
 	}
 
@@ -271,14 +277,6 @@ public class Tank {
 
 	public void setMove(boolean isMove) {
 		this.isMove = isMove;
-	}
-
-	public TankFrame getTf() {
-		return tf;
-	}
-
-	public void setTf(TankFrame tf) {
-		this.tf = tf;
 	}
 
 }

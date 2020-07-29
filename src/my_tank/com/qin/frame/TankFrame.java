@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -28,11 +29,11 @@ public class TankFrame extends Frame {
 
 	public static final TankFrame INSTANCE = new TankFrame();
 
-	private Random r=new Random();
-	
+	private Random r = new Random();
+
 	public List<Tank> enemyTanks = new ArrayList<>();// 敌机坦克
-	
-	public Map<String, Tank> tanks=new HashMap<>();
+
+	public Map<UUID, Tank> tanks = new HashMap<>();
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
 	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
@@ -98,13 +99,16 @@ public class TankFrame extends Frame {
 					Tank enemyTank = enemyTanks.get(k);
 					b.crash(enemyTank);
 				}
-				// boolean isKill = b.crash(tank);
-//				if (isKill) {不会被打，无敌
-//					explodes.add(new Explode(tank.getX(), tank.getY(), this));
 //				}
 			}
 		}
-		drawEnemy(g);
+
+		Iterator<Map.Entry<UUID, Tank>> it = tanks.entrySet().iterator();
+		while(it.hasNext()) {
+			Map.Entry<UUID, Tank> entry=it.next();
+			Tank item=entry.getValue();
+			item.paint(g);
+		}
 		drawExplode(g);
 	}
 
@@ -116,26 +120,7 @@ public class TankFrame extends Frame {
 			}
 		}
 	}
-
-	/**
-	 * 画出敌机，并判断子弹是否命中
-	 * 
-	 * @param g
-	 * @param b
-	 */
-	private void drawEnemy(Graphics g) {
-		if (enemyTanks.size() > 0) {
-			for (int i = 0; i < enemyTanks.size(); i++) {
-				Tank tank = enemyTanks.get(i);
-				tank.paint(g);
-				int rand = random.nextInt(1000);
-				if (rand > 950) {
-					tank.fire();
-				}
-			}
-		}
-
-	}
+ 
 
 	/**
 	 * 获取到随机方向，不能与原来的方向一致
@@ -257,15 +242,13 @@ public class TankFrame extends Frame {
 	}
 
 	public Tank findTankByUUID(UUID id) {
-		 
+
 		return tanks.get(id);
 	}
 
 	public void addTank(Tank t) {
-		// TODO Auto-generated method stub
-		
+		tanks.put(t.getId(), t);
+
 	}
 
- 
-	
 }

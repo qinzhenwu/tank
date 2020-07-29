@@ -37,7 +37,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
 		in.readBytes(bytes);
 
 		Msg msg = null;
-		msg = (Msg)Class.forName("com.mashibing.tank.net." + msgType.toString() + "Msg").getDeclaredConstructor().newInstance();
+		msg = (Msg)Class.forName("my_tank.com.qin.net." + msgType.toString() + "Msg").getDeclaredConstructor().newInstance();
 
 		msg.parse(bytes);
 		out.add(msg);

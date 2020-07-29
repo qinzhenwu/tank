@@ -45,7 +45,7 @@ public class TankJoinMsg extends Msg {
 	}
 
 	/**
-	 * 处理具体的逻辑
+	 * 处理具体的逻辑，接收到其他客户端发来的消息后将tank绘制到frame上
 	 */
 	@Override
 	public void handler() {
