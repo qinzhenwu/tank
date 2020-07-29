@@ -49,7 +49,7 @@ public class Tank {
 
 	private Rectangle rectangle = new Rectangle();// tank形成的矩形
 
-	private UUID id = UUID.randomUUID();;
+	private UUID id = UUID.randomUUID();
 
 	private FireStrategy fireStrategy;// 发射策略
 
@@ -72,11 +72,12 @@ public class Tank {
 		this.rectangle.width = WIDTH;
 		this.rectangle.height = HEIGHT;
 		// 创建tank时指定发射策略
-		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
-			this.fireStrategy = new FourFireStrategy();
-		} else {
-			this.fireStrategy = new DefaultFireStrategy();
-		}
+//		if (this.group == TankGroup.RED) {// 可以将策略的实现类（全路径）放入的配置文件，通过propertyMg获取到路径，通过反射的方式创建实例
+//			this.fireStrategy = new FourFireStrategy();
+//		} else {
+//			this.fireStrategy = new DefaultFireStrategy();
+//		}
+		this.fireStrategy = new DefaultFireStrategy();
 	}
 
 	public Tank(TankJoinMsg msg) {
@@ -278,5 +279,13 @@ public class Tank {
 	public void setMove(boolean isMove) {
 		this.isMove = isMove;
 	}
+
+	@Override
+	public String toString() {
+		return "Tank [x=" + x + ", y=" + y + ", dir=" + dir + ", isMove=" + isMove + ", isAlive=" + isAlive + ", group="
+				+ group + ", id=" + id + "]";
+	}
+	
+	
 
 }

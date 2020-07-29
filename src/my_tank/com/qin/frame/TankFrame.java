@@ -23,6 +23,9 @@ import javax.swing.LayoutStyle;
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Explode;
 import my_tank.com.qin.model.Tank;
+import my_tank.com.qin.net.Client;
+import my_tank.com.qin.net.TankMovingMsg;
+import my_tank.com.qin.net.TankStopMsg;
 import my_tank.com.qin.utils.Audio;
 
 public class TankFrame extends Frame {
@@ -36,7 +39,6 @@ public class TankFrame extends Frame {
 	public Map<UUID, Tank> tanks = new HashMap<>();
 	public List<Bullet> bullets = new ArrayList();// 子弹
 	public List<Explode> explodes = new ArrayList();// 爆炸效果
-	public List<Tank> allCrashTanks = new ArrayList<>();// 需要碰撞的tank
 	public int WIDTH = 800, HEIGHT = 800;
 	Tank tank = new Tank(r.nextInt(WIDTH), r.nextInt(HEIGHT), Dir.RIGHT, this, TankGroup.RED);
 
@@ -94,13 +96,7 @@ public class TankFrame extends Frame {
 		for (int i = 0; i < bullets.size(); i++) {
 			Bullet b = bullets.get(i);
 			b.paint(g);// 画出所有的子弹
-			if (enemyTanks.size() > 0) {
-				for (int k = 0; k < enemyTanks.size(); k++) {
-					Tank enemyTank = enemyTanks.get(k);
-					b.crash(enemyTank);
-				}
-//				}
-			}
+	 
 		}
 
 		Iterator<Map.Entry<UUID, Tank>> it = tanks.entrySet().iterator();
@@ -205,6 +201,7 @@ public class TankFrame extends Frame {
 				break;
 			case KeyEvent.VK_SHIFT:// SHIFT键停止tank
 				tank.setMove(false);
+				Client.INSTANCE.send(new TankStopMsg(getTank()));
 				break;
 			default:
 				break;
@@ -225,6 +222,11 @@ public class TankFrame extends Frame {
 			if (is_r) {
 				tank.setDir(Dir.RIGHT);
 			}
+			
+			if(tank.isMove()) {
+				Client.INSTANCE.send(new TankMovingMsg(getTank()));
+			}
+			
 			if (is_u || is_d || is_l || is_r) {// 按了方向键，进行移动
 				tank.setMove(true);
 			}
@@ -249,6 +251,11 @@ public class TankFrame extends Frame {
 	public void addTank(Tank t) {
 		tanks.put(t.getId(), t);
 
+	}
+
+	public void addBullet(Bullet bullet) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

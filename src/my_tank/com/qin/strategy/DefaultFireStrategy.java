@@ -2,6 +2,8 @@ package my_tank.com.qin.strategy;
 
 import my_tank.com.qin.model.Bullet;
 import my_tank.com.qin.model.Tank;
+import my_tank.com.qin.net.BulletNewMsg;
+import my_tank.com.qin.net.Client;
 import my_tank.com.qin.utils.Audio;
 
 /**
@@ -17,8 +19,10 @@ public class DefaultFireStrategy implements FireStrategy {
 		int bX = tank.getX() + tank.WIDTH / 2 - Bullet.width / 2;
 		int bY = tank.getY() + tank.WIDTH / 2 - Bullet.height / 2;// 计算子弹的位置
 
-		new Bullet(bX, bY, tank.getDir(), true, tank.tf, tank.getGroup());// 向frame对象中的list中放入子弹对象，然后不断打印
-		new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+		//new Bullet(bX, bY, tank.getDir(), true, tank.tf, tank.getGroup());// 向frame对象中的list中放入子弹对象，然后不断打印
+		Bullet b=new Bullet(tank.getId(), bX, bY, tank.getDir(), tank.getGroup(), tank.tf);// 向frame对象中的list中放入子弹对象，然后不断打印
+		Client.INSTANCE.send(new BulletNewMsg(b));
+		new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
 	}
 
 }

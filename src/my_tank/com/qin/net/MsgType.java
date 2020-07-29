@@ -8,5 +8,5 @@ package my_tank.com.qin.net;
  */
 public enum MsgType {
 
-	TankJoin, TankDirChanged, TankStop, TankStartMoving, BulletNew, TankDie;
+	TankJoin, TankDirChanged, TankStop, TankMoving, BulletNew, TankDie;
 }

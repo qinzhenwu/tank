@@ -3,6 +3,7 @@ package my_tank.com.qin.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.UUID;
 
 import javax.sound.sampled.AudioInputStream;
 
@@ -11,6 +12,8 @@ import my_tank.com.qin.frame.Dir;
 import my_tank.com.qin.frame.TankFrame;
 import my_tank.com.qin.frame.TankGroup;
 import my_tank.com.qin.manager.SourceManager;
+import my_tank.com.qin.net.BulletNewMsg;
+import my_tank.com.qin.net.Client;
 import my_tank.com.qin.utils.Audio;
 import sun.audio.AudioData;
 
@@ -30,6 +33,10 @@ public class Bullet {
 	private int x;
 
 	private int y;
+
+	private UUID playerID;
+
+	private UUID id = UUID.randomUUID();
 
 	public static int width = SourceManager.bulletDn.getWidth();
 
@@ -80,6 +87,19 @@ public class Bullet {
 		this.isAlive = isAlive;
 		this.tankFrame = tankFrame;
 		this.tankFrame.bullets.add(this);
+
+	}
+
+	public Bullet(UUID playerID, int x2, int y2, Dir dir2, TankGroup group2, TankFrame instance) {
+		this.x = x2;
+		this.dir = dir2;
+		this.y = y2;
+		this.group = group2;
+		this.tankFrame = instance;
+		this.playerID = playerID;
+		this.isAlive = true;
+		this.tankFrame.bullets.add(this);
+		
 	}
 
 	public void paint(Graphics g) {
@@ -166,6 +186,30 @@ public class Bullet {
 
 	public void setTankFrame(TankFrame tankFrame) {
 		this.tankFrame = tankFrame;
+	}
+
+	public UUID getId() {
+
+		return this.id;
+	}
+
+	public UUID getPlayerId() {
+
+		return this.playerID;
+	}
+
+	public Dir getDir() {
+
+		return this.dir;
+	}
+
+	public TankGroup getGroup() {
+		return this.group;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+
 	}
 
 }
